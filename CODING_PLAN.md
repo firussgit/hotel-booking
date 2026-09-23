@@ -3,12 +3,12 @@
 Derived from [PLAN.md](PLAN.md). Check items off as we implement them, phase by phase.
 
 ## Phase 1 — Foundation
-- [ ] Create solution (`HotelBooking.sln`) with projects: Api, Application, Domain, Infrastructure, Tests
-- [ ] Configure project references (Api → Application → Domain; Infrastructure → Application/Domain)
-- [ ] Add EF Core packages, configure `DbContext`
-- [ ] Configure PostgreSQL (or SQLite) connection
-- [ ] Create initial migration
-- [ ] Seed sample hotel/rooms data
+- [x] Create solution (`HotelBooking.sln`) with projects: Api, Application, Domain, Infrastructure, Tests
+- [x] Configure project references (Api → Application/Infrastructure; Infrastructure → Application/Domain; Application → Domain)
+- [x] Add EF Core packages, configure `DbContext`
+- [x] Configure SQLite connection
+- [x] Create initial migration (empty — populated once Phase 2 entities land)
+- [ ] Seed sample hotel/rooms data (after Phase 2 entities exist)
 
 ## Phase 2 — Core domain
 - [ ] `Hotel` entity
