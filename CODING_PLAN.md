@@ -37,10 +37,10 @@ Derived from [PLAN.md](PLAN.md). Check items off as we implement them, phase by 
 - [x] Consistent API error responses (status/code/message) + proper HTTP status codes
 
 ## Phase 5 — Tests
-- [ ] Unit tests: `CalculateReservationPrice`, `ShouldRejectInvalidDates`, `ShouldRejectMoreGuestsThanRoomCapacity`
-- [ ] Unit tests: `ShouldDetectOverlappingReservation`, `ShouldAllowAdjacentReservations`
-- [ ] Integration tests: reservation + payment creation via API
-- [ ] Integration/concurrency test: double-booking prevention
+- [x] Unit tests: `CalculateReservationPrice`, `ShouldRejectInvalidDates`, `ShouldRejectMoreGuestsThanRoomCapacity`
+- [x] Unit tests: `ShouldDetectOverlappingReservation`, `ShouldAllowAdjacentReservations`
+- [x] Integration tests: reservation + payment creation via API
+- [x] Integration/concurrency test: double-booking prevention (verified with real concurrent HTTP requests, not just sequential calls; 22/22 tests passing, re-run 3x to confirm no flakiness)
 
 ## Phase 6 — Frontend (Angular)
 - [ ] Home / search page
