@@ -8,16 +8,16 @@ Derived from [PLAN.md](PLAN.md). Check items off as we implement them, phase by 
 - [x] Add EF Core packages, configure `DbContext`
 - [x] Configure SQLite connection
 - [x] Create initial migration (empty — populated once Phase 2 entities land)
-- [ ] Seed sample hotel/rooms data (after Phase 2 entities exist)
+- [x] Seed sample hotel/rooms data
 
 ## Phase 2 — Core domain
-- [ ] `Hotel` entity
-- [ ] `RoomType` entity
-- [ ] `Room` entity (with `Status` enum: Available/Maintenance/Inactive)
-- [ ] `Guest` entity
-- [ ] `Reservation` entity (with `Status` enum: Pending/Confirmed/Cancelled/Completed)
-- [ ] `Payment` entity (with `Status` enum: Pending/Paid/Failed/Refunded)
-- [ ] Configure entity relationships & EF Core mappings
+- [x] `Hotel` entity
+- [x] `RoomType` entity
+- [x] `Room` entity (with `Status` enum: Available/Maintenance/Inactive)
+- [x] `Guest` entity
+- [x] `Reservation` entity (with `Status` enum: Pending/Confirmed/Cancelled/Completed)
+- [x] `Payment` entity (with `Status` enum: Pending/Paid/Failed/Refunded)
+- [x] Configure entity relationships & EF Core mappings
 
 ## Phase 3 — API
 - [ ] Auth endpoints: `POST /api/auth/register`, `POST /api/auth/login` (ASP.NET Core Identity / JWT)
