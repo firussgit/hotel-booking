@@ -20,21 +20,21 @@ Derived from [PLAN.md](PLAN.md). Check items off as we implement them, phase by 
 - [x] Configure entity relationships & EF Core mappings
 
 ## Phase 3 — API
-- [ ] Auth endpoints: `POST /api/auth/register`, `POST /api/auth/login` (ASP.NET Core Identity / JWT)
-- [ ] Room endpoints: `GET/POST/PUT/DELETE /api/rooms`, `GET /api/rooms/{id}`
-- [ ] Availability endpoint: `GET /api/rooms/availability`
-- [ ] Reservation endpoints: `POST/GET /api/reservations`, `GET /api/reservations/{id}`, `POST /api/reservations/{id}/cancel`
-- [ ] Admin endpoints: `GET /api/admin/reservations`, `GET /api/admin/dashboard`, `POST/PUT /api/admin/rooms`
-- [ ] Role-based authorization (Guest vs Admin)
+- [x] Auth endpoints: `POST /api/auth/register`, `POST /api/auth/login` (ASP.NET Core Identity / JWT)
+- [x] Room endpoints: `GET/POST/PUT/DELETE /api/rooms`, `GET /api/rooms/{id}`
+- [x] Availability endpoint: `GET /api/rooms/availability`
+- [x] Reservation endpoints: `POST/GET /api/reservations`, `GET /api/reservations/{id}`, `POST /api/reservations/{id}/cancel`
+- [x] Admin endpoints: `GET /api/admin/reservations`, `GET /api/admin/dashboard` (admin room mutation reuses the `/api/rooms` endpoints, gated by `[Authorize(Roles = Admin)]`, instead of duplicating CRUD under `/api/admin/rooms`)
+- [x] Role-based authorization (Guest vs Admin)
 
 ## Phase 4 — Business logic
-- [ ] `AvailabilityService` — overlap detection logic
-- [ ] Date validation (check-in/check-out)
-- [ ] Guest count vs room capacity validation
-- [ ] `ReservationService` — price calculation (subtotal + tax)
-- [ ] Cancellation flow
-- [ ] Double-booking protection (re-check availability inside transaction at reservation creation)
-- [ ] Consistent API error responses (status/code/message) + proper HTTP status codes
+- [x] `AvailabilityService` — overlap detection logic
+- [x] Date validation (check-in/check-out)
+- [x] Guest count vs room capacity validation
+- [x] `ReservationService` — price calculation (subtotal + tax)
+- [x] Cancellation flow
+- [x] Double-booking protection (re-check availability inside transaction at reservation creation)
+- [x] Consistent API error responses (status/code/message) + proper HTTP status codes
 
 ## Phase 5 — Tests
 - [ ] Unit tests: `CalculateReservationPrice`, `ShouldRejectInvalidDates`, `ShouldRejectMoreGuestsThanRoomCapacity`
