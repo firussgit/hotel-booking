@@ -53,6 +53,6 @@ Derived from [PLAN.md](PLAN.md). Check items off as we implement them, phase by 
 - [x] Global exception handling middleware (done in Phase 3/4)
 - [x] Structured logging (Serilog), no sensitive data logged
 - [x] Swagger/OpenAPI docs (done in Phase 3; now enabled in all environments)
-- [ ] Docker + docker-compose — API + SQLite (no separate Postgres/Angular containers per our stack choices); **files written but unverified**, Docker Desktop install is blocked on an admin/UAC prompt this session can't answer — user installing manually, verify once available
+- [ ] Docker + docker-compose — API + SQLite (no separate Postgres/Angular containers per our stack choices); **files written but unverified**. Blocked: Docker Desktop requires Windows 10 build 19041+ (WSL2), this machine is on build 18362 (version 1903). Deferred until the user updates Windows; revisit then.
 - [x] README (overview, architecture, API docs, design decisions, running locally, Docker)
 - [ ] Screenshots (blocked on Phase 6 frontend existing)
