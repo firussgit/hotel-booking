@@ -50,9 +50,9 @@ Derived from [PLAN.md](PLAN.md). Check items off as we implement them, phase by 
 - [ ] Admin dashboard
 
 ## Phase 7 — Polish
-- [ ] Global exception handling middleware
-- [ ] Structured logging (Serilog), no sensitive data logged
-- [ ] Swagger/OpenAPI docs
-- [ ] Docker + docker-compose (Angular, API, PostgreSQL)
-- [ ] README (overview, architecture, API docs, design decisions, running locally)
-- [ ] Screenshots
+- [x] Global exception handling middleware (done in Phase 3/4)
+- [x] Structured logging (Serilog), no sensitive data logged
+- [x] Swagger/OpenAPI docs (done in Phase 3; now enabled in all environments)
+- [ ] Docker + docker-compose — API + SQLite (no separate Postgres/Angular containers per our stack choices); **files written but unverified**, Docker Desktop install is blocked on an admin/UAC prompt this session can't answer — user installing manually, verify once available
+- [x] README (overview, architecture, API docs, design decisions, running locally, Docker)
+- [ ] Screenshots (blocked on Phase 6 frontend existing)
