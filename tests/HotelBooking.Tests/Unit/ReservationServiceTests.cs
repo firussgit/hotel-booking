@@ -6,6 +6,7 @@ using HotelBooking.Domain.Entities;
 using HotelBooking.Domain.Enums;
 using HotelBooking.Infrastructure.Persistence;
 using HotelBooking.Tests.Support;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace HotelBooking.Tests.Unit;
 
@@ -34,7 +35,7 @@ public class ReservationServiceTests : IDisposable
     }
 
     private ReservationService CreateSut(HotelBookingDbContext context)
-        => new(context, new AvailabilityService(context));
+        => new(context, new AvailabilityService(context), NullLogger<ReservationService>.Instance);
 
     [Fact]
     public async Task ShouldRejectInvalidDates_WhenCheckOutIsNotAfterCheckIn()

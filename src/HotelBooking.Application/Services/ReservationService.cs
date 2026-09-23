@@ -6,6 +6,7 @@ using HotelBooking.Domain.Entities;
 using HotelBooking.Domain.Enums;
 using HotelBooking.Domain.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace HotelBooking.Application.Services;
 
@@ -13,11 +14,13 @@ public class ReservationService : IReservationService
 {
     private readonly IApplicationDbContext _context;
     private readonly IAvailabilityService _availabilityService;
+    private readonly ILogger<ReservationService> _logger;
 
-    public ReservationService(IApplicationDbContext context, IAvailabilityService availabilityService)
+    public ReservationService(IApplicationDbContext context, IAvailabilityService availabilityService, ILogger<ReservationService> logger)
     {
         _context = context;
         _availabilityService = availabilityService;
+        _logger = logger;
     }
 
     public async Task<ReservationDto> CreateAsync(string userId, CreateReservationDto dto, CancellationToken cancellationToken = default)
@@ -52,6 +55,7 @@ public class ReservationService : IReservationService
 
         if (room.Status != RoomStatus.Available)
         {
+            _logger.LogWarning("Booking attempt rejected - room {RoomNumber} is not available", room.RoomNumber);
             throw new ConflictException("ROOM_NOT_AVAILABLE", $"Room {room.RoomNumber} is not available for booking.");
         }
 
@@ -61,6 +65,7 @@ public class ReservationService : IReservationService
         var stillAvailable = await _availabilityService.IsRoomAvailableAsync(dto.RoomId, dto.CheckIn, dto.CheckOut, cancellationToken: cancellationToken);
         if (!stillAvailable)
         {
+            _logger.LogWarning("Booking attempt rejected - room {RoomNumber} no longer available for {CheckIn} to {CheckOut}", room.RoomNumber, dto.CheckIn, dto.CheckOut);
             throw new ConflictException("ROOM_NOT_AVAILABLE", $"Room {room.RoomNumber} is no longer available for the selected dates.");
         }
 
@@ -94,6 +99,9 @@ public class ReservationService : IReservationService
         await _context.SaveChangesAsync(cancellationToken);
 
         await transaction.CommitAsync(cancellationToken);
+
+        _logger.LogInformation("Reservation {ReservationId} created for room {RoomNumber}", reservation.Id, room.RoomNumber);
+        _logger.LogInformation("Payment {PaymentId} processed for reservation {ReservationId}", payment.Id, reservation.Id);
 
         return ToDto(reservation, room);
     }
@@ -157,6 +165,8 @@ public class ReservationService : IReservationService
 
         reservation.Status = ReservationStatus.Cancelled;
         await _context.SaveChangesAsync(cancellationToken);
+
+        _logger.LogInformation("Reservation {ReservationId} cancelled", reservation.Id);
     }
 
     private static ReservationDto ToDto(Reservation r, Room room) => new(
