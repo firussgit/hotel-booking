@@ -25,6 +25,8 @@ HotelBooking/
 └── HotelBooking.Infrastructure  EF Core DbContext, migrations, Identity, JWT issuing, DI wiring
 
 HotelBooking.Tests               Unit tests (Domain logic + services) and integration tests (real HTTP calls)
+
+client                           Angular 19 app (standalone components) — guest search/booking/reservations, admin dashboard/rooms
 ```
 
 `Domain` has zero dependencies on EF Core or ASP.NET Core — `OverlapChecker` and `PriceCalculator` are plain static methods, which is what makes them trivial to unit test in isolation. `Application` depends only on an `IApplicationDbContext` interface (not the concrete EF Core type), so it stays testable without a real database; `Infrastructure` implements that interface.
@@ -32,6 +34,7 @@ HotelBooking.Tests               Unit tests (Domain logic + services) and integr
 ## Tech Stack
 
 - **Backend:** C#, ASP.NET Core 8 Web API, EF Core 8, SQLite, ASP.NET Core Identity + JWT bearer auth, Serilog, Swagger/OpenAPI
+- **Frontend:** Angular 19 (standalone components, signals, `@if`/`@for` control flow), plain CSS — no component library, kept deliberately simple since the backend is the focus of this project
 - **Testing:** xUnit, FluentAssertions, `WebApplicationFactory` for integration tests, SQLite in-memory for transactional unit tests
 - **Infrastructure:** Docker
 
@@ -116,6 +119,18 @@ dotnet run --project src/HotelBooking.Api
 
 The API applies EF Core migrations and seeds sample data (one hotel, four room types, seven rooms, the `Admin`/`Guest` roles, and the seed admin account) automatically on startup. Swagger UI is at `http://localhost:<port>/swagger`.
 
+### Frontend
+
+Requires Node.js. The Angular CLI's own Node version check can be stricter than what's actually needed — if it complains, `npx @angular/cli@19` works with slightly older Node versions.
+
+```bash
+cd client
+npm install
+npx ng serve
+```
+
+Open `http://localhost:4200`. The app calls the API at `http://localhost:5299/api` (see `client/src/app/core/api-config.ts`) and the API must allow that origin via CORS — already the default (`Cors:AllowedOrigins` in `appsettings.json`, defaulting to `http://localhost:4200` if unset).
+
 ## Docker
 
 ```bash
@@ -129,5 +144,6 @@ Serves the API at `http://localhost:8080` (Swagger at `/swagger`), with the SQLi
 - **Room occupancy is derived from reservations, not stored as a permanent room state.** `Room.Status` only tracks `Available` / `Maintenance` / `Inactive` — administrative states. Whether a room is "occupied" on a given date is computed from `Reservation` rows, which avoids a second source of truth that could drift out of sync with the actual bookings.
 - **Availability is checked twice: at search and again at booking creation, inside a transaction.** A search result is a snapshot; by the time a guest submits a booking, another guest may have taken the room. Re-validating inside the transaction — rather than trusting the earlier search — is what actually prevents double-booking, and it's covered by a real concurrent-request test rather than just sequential unit tests.
 - **SQLite instead of PostgreSQL.** This keeps the project runnable with zero external setup (`dotnet run` and it works), which matters more for a portfolio demo than production-grade concurrent-write throughput. The `Application`/`Infrastructure` split means swapping to PostgreSQL is a matter of changing the EF Core provider and connection string, not rewriting business logic.
-- **Admin room management reuses `/api/rooms` with role-based authorization**, instead of duplicating CRUD under a separate `/api/admin/rooms`. One implementation, gated by `[Authorize(Roles = "Admin")]` on the mutating verbs, rather than two copies of the same logic.
+- **Admin room management reuses `/api/rooms` with role-based authorization**, instead of duplicating CRUD under a separate `/api/admin/rooms`. One implementation, gated by `[Authorize(Roles = "Admin")]` on the mutating verbs, rather than two copies of the same logic — and the admin rooms page in the frontend follows the same reuse.
+- **Single-hotel demo scope.** There's no `GET /api/hotels` endpoint or hotel picker in the UI; the admin "add room" form derives its room-type options and hotel id from the existing `/api/rooms` response. This matches the seed data (one hotel) and keeps the frontend from needing endpoints the backend doesn't otherwise expose.
 - **No HTTPS redirection.** This demo has no TLS termination configured (and the Docker image only exposes plain HTTP); in a real deployment, TLS would sit at a reverse proxy/load balancer in front of the API rather than in the app itself.
