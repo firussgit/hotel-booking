@@ -139,6 +139,15 @@ docker compose up --build
 
 Serves the API at `http://localhost:8080` (Swagger at `/swagger`), with the SQLite database and log files persisted in named Docker volumes across restarts.
 
+## Screenshots
+
+| | |
+|---|---|
+| ![Home / search](docs/screenshots/01-home.png) Home / search | ![Search results](docs/screenshots/02-search-results.png) Search results |
+| ![Register](docs/screenshots/03-register.png) Register | ![Booking confirmation](docs/screenshots/04-booking.png) Booking confirmation |
+| ![My reservations](docs/screenshots/05-my-reservations.png) My reservations | ![Login](docs/screenshots/06-login.png) Login |
+| ![Admin dashboard](docs/screenshots/07-admin-dashboard.png) Admin dashboard | ![Admin room management](docs/screenshots/08-admin-rooms.png) Admin room management |
+
 ## Design Decisions
 
 - **Room occupancy is derived from reservations, not stored as a permanent room state.** `Room.Status` only tracks `Available` / `Maintenance` / `Inactive` — administrative states. Whether a room is "occupied" on a given date is computed from `Reservation` rows, which avoids a second source of truth that could drift out of sync with the actual bookings.
