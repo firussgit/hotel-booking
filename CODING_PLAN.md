@@ -56,4 +56,4 @@ Derived from [PLAN.md](PLAN.md). Check items off as we implement them, phase by 
 - [x] Swagger/OpenAPI docs (done in Phase 3; now enabled in all environments)
 - [ ] Docker + docker-compose — API + SQLite (no separate Postgres/Angular containers per our stack choices); **files written but unverified**. Blocked: Docker Desktop requires Windows 10 build 19041+ (WSL2), this machine is on build 18362 (version 1903). Deferred until the user updates Windows; revisit then.
 - [x] README (overview, architecture, API docs, design decisions, running locally, Docker)
-- [ ] Screenshots (frontend now exists — ready whenever we want to capture them)
+- [x] Screenshots (8 captured via Playwright against a running instance, in `docs/screenshots/`, linked from the README)
