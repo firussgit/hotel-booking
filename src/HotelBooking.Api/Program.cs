@@ -70,6 +70,18 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+const string ClientCorsPolicy = "ClientCorsPolicy";
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>()
+    ?? new[] { "http://localhost:4200" };
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(ClientCorsPolicy, policy =>
+        policy.WithOrigins(allowedOrigins)
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -89,6 +101,8 @@ app.UseSwaggerUI();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSerilogRequestLogging();
+
+app.UseCors(ClientCorsPolicy);
 
 app.UseAuthentication();
 app.UseAuthorization();

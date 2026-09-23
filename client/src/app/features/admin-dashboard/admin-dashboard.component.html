@@ -1,0 +1,55 @@
+<div class="page">
+  <h1>Admin Dashboard</h1>
+
+  @if (dashboard(); as stats) {
+    <div class="stat-row">
+      <div class="stat-tile">
+        <div class="value">{{ stats.totalRooms }}</div>
+        <div class="label">Rooms</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">{{ stats.occupancyRatePercent }}%</div>
+        <div class="label">Occupancy</div>
+      </div>
+      <div class="stat-tile">
+        <div class="value">€{{ stats.totalRevenue.toFixed(2) }}</div>
+        <div class="label">Revenue</div>
+      </div>
+    </div>
+  }
+
+  <h2 style="margin-top: 32px;">All reservations</h2>
+
+  @if (loading()) {
+    <p class="muted">Loading…</p>
+  } @else if (reservations().length === 0) {
+    <p class="muted">No reservations yet.</p>
+  } @else {
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Room</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Status</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (reservation of reservations(); track reservation.id) {
+            <tr>
+              <td>{{ reservation.id }}</td>
+              <td>{{ reservation.roomType }} · {{ reservation.roomNumber }}</td>
+              <td>{{ reservation.checkIn }}</td>
+              <td>{{ reservation.checkOut }}</td>
+              <td><span class="badge" [class]="statusClass(reservation.status)">{{ reservation.status }}</span></td>
+              <td>€{{ reservation.totalPrice.toFixed(2) }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

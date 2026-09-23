@@ -1,0 +1,24 @@
+<header class="nav">
+  <div class="nav-inner">
+    <a class="brand" routerLink="/">Grand Azure Hotel</a>
+    <nav class="links">
+      <a routerLink="/">Search</a>
+      @if (auth.isAuthenticated()) {
+        <a routerLink="/my-reservations">My Reservations</a>
+      }
+      @if (auth.isAdmin()) {
+        <a routerLink="/admin">Dashboard</a>
+        <a routerLink="/admin/rooms">Rooms</a>
+      }
+    </nav>
+    <div class="session">
+      @if (auth.isAuthenticated()) {
+        <span class="muted">{{ auth.email() }}</span>
+        <button (click)="logout()">Log out</button>
+      } @else {
+        <a routerLink="/login">Log in</a>
+        <a routerLink="/register">Register</a>
+      }
+    </div>
+  </div>
+</header>

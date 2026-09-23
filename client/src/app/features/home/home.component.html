@@ -1,0 +1,51 @@
+<div class="page">
+  <h1>Find your perfect room</h1>
+
+  <div class="card">
+    @if (errorMessage()) {
+      <div class="error-banner">{{ errorMessage() }}</div>
+    }
+
+    <form (ngSubmit)="search()" class="form-row">
+      <div class="field">
+        <label for="checkIn">Check-in</label>
+        <input id="checkIn" name="checkIn" type="date" [(ngModel)]="checkIn" required />
+      </div>
+      <div class="field">
+        <label for="checkOut">Check-out</label>
+        <input id="checkOut" name="checkOut" type="date" [(ngModel)]="checkOut" required />
+      </div>
+      <div class="field">
+        <label for="guests">Guests</label>
+        <input id="guests" name="guests" type="number" min="1" [(ngModel)]="guests" required />
+      </div>
+      <button class="primary" type="submit" [disabled]="searching()">
+        {{ searching() ? 'Searching…' : 'Search' }}
+      </button>
+    </form>
+  </div>
+
+  @if (searched() && !searching()) {
+    <h2 style="margin-top: 32px;">
+      {{ results().length }} room{{ results().length === 1 ? '' : 's' }} available
+    </h2>
+
+    @if (results().length === 0) {
+      <p class="muted">No rooms match your search. Try different dates or a lower guest count.</p>
+    }
+
+    @for (room of results(); track room.roomId) {
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <strong>{{ room.roomType }}</strong> — Room {{ room.roomNumber }}
+          <div class="muted">Up to {{ room.maxGuests }} guests · €{{ room.pricePerNight }} / night</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-size: 1.2rem; font-weight: 700;">€{{ room.totalPrice.toFixed(2) }}</div>
+          <div class="muted" style="margin-bottom: 8px;">total for stay</div>
+          <button class="primary" (click)="book(room)">Book</button>
+        </div>
+      </div>
+    }
+  }
+</div>

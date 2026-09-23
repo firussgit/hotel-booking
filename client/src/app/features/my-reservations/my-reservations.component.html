@@ -1,0 +1,30 @@
+<div class="page">
+  <h1>My Reservations</h1>
+
+  @if (loading()) {
+    <p class="muted">Loading…</p>
+  } @else if (reservations().length === 0) {
+    <p class="muted">You have no reservations yet.</p>
+  } @else {
+    @for (reservation of reservations(); track reservation.id) {
+      <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <strong>Reservation #{{ reservation.id }}</strong>
+          <span class="badge" [class]="statusClass(reservation.status)" style="margin-left: 8px;">
+            {{ reservation.status }}
+          </span>
+          <div class="muted">{{ reservation.roomType }} · Room {{ reservation.roomNumber }}</div>
+          <div class="muted">{{ reservation.checkIn }} → {{ reservation.checkOut }} · {{ reservation.guestsCount }} guest(s)</div>
+        </div>
+        <div style="text-align: right;">
+          <div style="font-weight: 700;">€{{ reservation.totalPrice.toFixed(2) }}</div>
+          @if (canCancel(reservation.status)) {
+            <button class="danger" style="margin-top: 8px;" [disabled]="cancellingId() === reservation.id" (click)="cancel(reservation)">
+              {{ cancellingId() === reservation.id ? 'Cancelling…' : 'Cancel' }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  }
+</div>

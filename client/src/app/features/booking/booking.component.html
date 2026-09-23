@@ -1,0 +1,45 @@
+<div class="page" style="max-width: 480px;">
+  <h1>Confirm booking</h1>
+
+  @if (loading()) {
+    <p class="muted">Loading…</p>
+  } @else if (room()) {
+    <div class="card">
+      @if (errorMessage()) {
+        <div class="error-banner">{{ errorMessage() }}</div>
+      }
+
+      <h2 style="margin-top: 0;">{{ room()!.roomTypeName }}</h2>
+      <p class="muted">Room {{ room()!.roomNumber }}</p>
+
+      <table style="margin: 16px 0;">
+        <tr>
+          <td>Check-in</td>
+          <td>{{ checkIn }}</td>
+        </tr>
+        <tr>
+          <td>Check-out</td>
+          <td>{{ checkOut }}</td>
+        </tr>
+        <tr>
+          <td>Nights</td>
+          <td>{{ nights }}</td>
+        </tr>
+        <tr>
+          <td>Guests</td>
+          <td>{{ guests }}</td>
+        </tr>
+        <tr>
+          <td><strong>Total (incl. 10% tax)</strong></td>
+          <td><strong>€{{ totalPrice.toFixed(2) }}</strong></td>
+        </tr>
+      </table>
+
+      <button class="primary" (click)="confirm()" [disabled]="submitting()">
+        {{ submitting() ? 'Booking…' : 'Confirm Booking' }}
+      </button>
+    </div>
+  } @else {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  }
+</div>

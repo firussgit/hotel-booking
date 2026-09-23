@@ -1,0 +1,73 @@
+<div class="page">
+  <h1>Manage Rooms</h1>
+
+  @if (errorMessage()) {
+    <div class="error-banner">{{ errorMessage() }}</div>
+  }
+
+  <div class="card">
+    <h2 style="margin-top: 0;">Add room</h2>
+    <form (ngSubmit)="createRoom()" class="form-row">
+      <div class="field">
+        <label for="roomType">Room type</label>
+        <select id="roomType" name="roomType" [(ngModel)]="newRoomTypeId">
+          @for (type of roomTypeOptions; track type.id) {
+            <option [value]="type.id">{{ type.name }}</option>
+          }
+        </select>
+      </div>
+      <div class="field">
+        <label for="roomNumber">Room number</label>
+        <input id="roomNumber" name="roomNumber" [(ngModel)]="newRoomNumber" required />
+      </div>
+      <div class="field">
+        <label for="floor">Floor</label>
+        <input id="floor" name="floor" type="number" min="0" [(ngModel)]="newFloor" required />
+      </div>
+      <button class="primary" type="submit" [disabled]="creating()">
+        {{ creating() ? 'Adding…' : 'Add room' }}
+      </button>
+    </form>
+  </div>
+
+  <h2 style="margin-top: 32px;">Rooms</h2>
+
+  @if (loading()) {
+    <p class="muted">Loading…</p>
+  } @else {
+    <div class="card">
+      <table>
+        <thead>
+          <tr>
+            <th>Room</th>
+            <th>Type</th>
+            <th>Floor</th>
+            <th>Price/night</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (room of rooms(); track room.id) {
+            <tr>
+              <td>{{ room.roomNumber }}</td>
+              <td>{{ room.roomTypeName }}</td>
+              <td>{{ room.floor }}</td>
+              <td>€{{ room.pricePerNight }}</td>
+              <td>
+                <select [ngModel]="room.status" (ngModelChange)="updateStatus(room, $event)">
+                  @for (status of statuses; track status) {
+                    <option [value]="status">{{ status }}</option>
+                  }
+                </select>
+              </td>
+              <td>
+                <button class="danger" (click)="deleteRoom(room)">Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
