@@ -13,6 +13,16 @@ services:
       - hotelbooking-logs:/app/logs
     restart: unless-stopped
 
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+
 volumes:
   hotelbooking-data:
   hotelbooking-logs:
